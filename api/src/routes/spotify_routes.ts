@@ -5,4 +5,6 @@ const router = Router();
 
 router.post('/spotify/refresh', SpotifyController.getRefreshToken);
 
+router.post('/spotify/profile', SpotifyController.getUserProfile);
+
 export default router;

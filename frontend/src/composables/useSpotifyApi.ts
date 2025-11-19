@@ -14,7 +14,7 @@ export function useSpotifyApi() {
     verifier = await generateCodeVerifier(128);
     const challenge = await generateCodeChallenge(verifier);
 
-    await Storage.set('verifier', verifier)
+    await Storage.set('verifier', verifier);
 
     SpotifyApi.authFlow(CLIENT_ID, challenge);
   }
@@ -44,6 +44,7 @@ export function useSpotifyApi() {
       }
 
       token = await getAccessToken(CLIENT_ID, code);
+      await fetchUserProfile(token);
       loading = false;
 
       setTimeout(() => {
@@ -106,7 +107,9 @@ export function useSpotifyApi() {
     return token as string;
   }
 
-  async function fetchUserProfile(token: string): Promise<any> {}
+  async function fetchUserProfile(token: string | null): Promise<any> {
+    const profile = SpotifyApi.getProfile(token as string);
+  }
   async function populateUI(profile: any) {}
 
   return {

@@ -4,3 +4,8 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
   const data = await spotifyApi.getRefreshToken(clientId, code, verifier);
   return data;
 }
+
+export const getUserProfile = async (token: string) => {
+  const data = await spotifyApi.getUserProfile(token);
+  return token;
+}

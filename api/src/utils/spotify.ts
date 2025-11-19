@@ -17,4 +17,12 @@ export const getRefreshToken = async (clientId: string, accessCode: string, veri
     }
     
     return res.json();
-} 
+}
+
+export const getUserProfile = async (token: string) => {
+  const res = await fetch("https://api.spotify.com/v1/me", {
+    method: "GET", headers: { Authorization: `Bearer ${token}`}
+  });
+  console.log(await res.json());
+  return await res.json()
+}

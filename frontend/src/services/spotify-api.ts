@@ -31,3 +31,15 @@ export const getAccessToken = async (clientId: string, accessCode: string, verif
     
     return response; 
 }   
+
+export const getProfile = async (token: string) => {
+    const response = await fetch("http://localhost:2121/api/spotify/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token: token
+      })
+    });
+
+    return response;
+}
