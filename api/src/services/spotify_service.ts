@@ -2,10 +2,9 @@ import * as spotifyApi from '../utils/spotify.js';
 
 export const getRefreshToken = async (clientId: string, code: string, verifier: string) => {
   const data = await spotifyApi.getRefreshToken(clientId, code, verifier);
-  return data;
-}
+  console.log(data);
+  const profileData = await spotifyApi.getUserProfile(data.access_token.toString());
+  console.log(profileData);
 
-export const getUserProfile = async (token: string) => {
-  const data = await spotifyApi.getUserProfile(token);
-  return token;
+  return data;
 }

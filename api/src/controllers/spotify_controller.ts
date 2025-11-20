@@ -10,13 +10,3 @@ export const getRefreshToken = async (req: Request, res: Response) => {
         res.status(500).json({ error: err.message || "Something went wrong" });
     }
 }
-
-export const getUserProfile = async (req: Request, res: Response) => {
-    try {
-        const { token } = req.body;
-        const data = await SpotifyService.getUserProfile(token);
-        res.status(201).json(data);
-    } catch(err: any) {
-        res.status(500).json({ error: err.message || "Something went wrong" });
-    }
-}

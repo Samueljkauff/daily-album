@@ -43,8 +43,7 @@ export function useSpotifyApi() {
         throw new Error("No authorization code received");
       }
 
-      token = await getAccessToken(CLIENT_ID, code);
-      await fetchUserProfile(token);
+      await getAccessToken(CLIENT_ID, code);
       loading = false;
 
       setTimeout(() => {
@@ -102,14 +101,12 @@ export function useSpotifyApi() {
 
     const { access_token } = await result.json();
     await Storage.set('token', access_token);
-    const token = await Storage.get('token');
+    token = await Storage.get('token');
 
     return token as string;
   }
 
-  async function fetchUserProfile(token: string | null): Promise<any> {
-    const profile = SpotifyApi.getProfile(token as string);
-  }
+  async function fetchUserProfile(token: string | null): Promise<any> {}
   async function populateUI(profile: any) {}
 
   return {
