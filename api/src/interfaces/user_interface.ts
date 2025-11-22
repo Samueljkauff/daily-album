@@ -8,6 +8,5 @@ export interface User {
   avatar_url: string | undefined;
   created_at: Date;
   updated_at: Date;
-
-  tokens: Token[]
+  tokens: Token[];
 }
