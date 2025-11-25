@@ -5,8 +5,8 @@ export interface User {
   spotify_id: string;
   username: string;
   email: string;
-  avatar_url: string | undefined;
+  avatar_url: string | null;
   created_at: Date;
   updated_at: Date;
-  tokens: Token[];
+  tokens?: Token[];
 }

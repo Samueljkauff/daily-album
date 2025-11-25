@@ -1,11 +1,14 @@
+import type { User } from "./user_interface.js";
 
 export interface Token {
   id: number;
   userId: string;
-  refreshToken: string;
-  expiresAt: Date;
+  refresh_token: string;
+  access_token: string;
+  expires_in: Date;
   revoked: boolean;
-  ipAddress?: string;
-  userAgent?: string;
-  createdAt: Date;
+  ip_address: string | null;
+  user_agent: string | null;
+  created_at: Date;
+  user: User;
 }
