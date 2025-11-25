@@ -30,7 +30,7 @@ model Token {
   userId       String
   access_token  String
   refresh_token String   @unique
-  expires_in    DateTime
+  expires_in    Int
   revoked      Boolean  @default(false)
   ip_address    String?
   user_agent    String?

@@ -1,9 +1,8 @@
-import type { Token } from "../interfaces/token_interface.js";
-import type { User } from "../interfaces/user_interface.js";
+import type { Token } from "@prisma/client";
+import type { User } from "@prisma/client";
 import prisma from "../prisma/client.js";
 
 export const createUser = async (user: User, token: Token): Promise<User> => {
-    console.log(JSON.stringify(user) + JSON.stringify(token))
 try{
   const created = prisma.user.create({
     data: {
@@ -14,6 +13,7 @@ try{
       tokens: { create: [token] },
     },
   });
+      console.log(await created);
   return created;
 } catch (error) {
     console.log(error);
