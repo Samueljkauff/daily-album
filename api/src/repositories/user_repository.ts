@@ -4,7 +4,7 @@ import prisma from "../prisma/client.js";
 
 export const createUser = async (user: User, token: Token): Promise<User> => {
   try {
-    const created = prisma.user.create({
+    const created = await prisma.user.create({
       data: {
         spotify_id: user.spotify_id,
         username: user.username,
@@ -21,40 +21,13 @@ export const createUser = async (user: User, token: Token): Promise<User> => {
 
 export const findUserBySpotifyID = async (spotify_id: string): Promise<boolean> => {
     try {
-    prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             spotify_id: spotify_id
         }
     });
-        return true;
+        return user !== null;
     } catch (error){
-        return false;
+        throw error;
     }
 };
-
-export const findRefreshToken = async (refreshToken: string): Promise<boolean> => {
-    try {
-        prisma.token.findUnique({
-            where: {
-                refresh_token: refreshToken
-            }
-        })
-        return true;
-    } catch(error) {
-        return false;
-    }
-};
-
-export const findUserAgent = async (refreshToken: string, userAgrent: string | null): Promise<boolean> => {
-    try {
-        prisma.token.findUnique({
-            where: {
-                refresh_token: refreshToken,
-                user_agent: userAgrent
-            }
-        })
-        return true;
-    } catch(error) {
-        return false;
-    }
-}
