@@ -1,11 +1,21 @@
 import type { Token } from "@prisma/client";
 import prisma from "../prisma/client.js";
 
-export const createToken = async (token: Token): Promise<Token> => {
+export const createToken = async (token: Token, userId: string): Promise<Token> => {
     try {
-        const created = await prisma.token.create({data: token});
+        const created = await prisma.token.create({
+            data: {
+            access_token: token.access_token,
+            refresh_token: token.refresh_token,
+            expires_in: token.expires_in,
+            user: {
+                connect: { spotify_id: userId }
+            }
+            }
+        });
         return created;
     } catch (error) {
+        console.log(error);
         throw error;
     }
 };

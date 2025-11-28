@@ -29,7 +29,7 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
   }
 
   if(hasAccount && !refreshTokenExists) {
-    await createToken(formattedTokenData);
+    await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
 
   return tokenData;
