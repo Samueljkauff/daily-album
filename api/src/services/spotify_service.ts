@@ -29,7 +29,12 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
   }
 
   if(hasAccount && !refreshTokenExists) {
-    await createToken(formattedTokenData, formattedUserData.spotify_id);
+    const { user_agent } = await createToken(formattedTokenData, formattedUserData.spotify_id);
+    // if this user agent is found associated with a token in our array that is not this one
+    // delete them.
+    if(user_agent) {
+      console.log("deleted old tokens!")
+    }
   }
 
   return tokenData;
