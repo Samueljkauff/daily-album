@@ -12,12 +12,15 @@ export const authFlow = (clientId: string, challenge: string) => {
 }
 
 export const getAccessToken = async (clientId: string, accessCode: string, verifier: string) => {
+    const userAgent = navigator.userAgent;
+    
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", accessCode);
     params.append("redirect_uri", "https://127.0.0.1:3000/callback");
     params.append("code_verifier", verifier!);
+    params.append("user_agent", userAgent);
 
     const response = await fetch("http://localhost:2121/api/spotify/refresh", {
       method: "POST",
