@@ -13,7 +13,6 @@ export const authFlow = (clientId: string, challenge: string) => {
 
 export const getAccessToken = async (clientId: string, accessCode: string, verifier: string) => {
     const userAgent = navigator.userAgent;
-    
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");

@@ -8,6 +8,7 @@ export const createToken = async (token: Token, userId: string): Promise<Token> 
             access_token: token.access_token,
             refresh_token: token.refresh_token,
             expires_in: token.expires_in,
+            user_agent: token.user_agent,
             user: {
                 connect: { spotify_id: userId }
             }
@@ -15,7 +16,6 @@ export const createToken = async (token: Token, userId: string): Promise<Token> 
         });
         return created;
     } catch (error) {
-        console.log(error);
         throw error;
     }
 };

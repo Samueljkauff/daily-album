@@ -4,7 +4,7 @@ import type { Token } from '@prisma/client';
 import { createUser, findUserBySpotifyID } from '../repositories/user_repository.js';
 import * as spotifyApi from '../utils/spotify.js';
 
-export const getRefreshToken = async (clientId: string, code: string, verifier: string) => {
+export const getRefreshToken = async (clientId: string, code: string, verifier: string, userAgent: string) => {
   const tokenData = await spotifyApi.getRefreshToken(clientId, code, verifier);
   const userData = await spotifyApi.getUserProfile(tokenData.access_token.toString());
 
@@ -19,6 +19,7 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
     access_token: tokenData.access_token,
     refresh_token: tokenData.refresh_token,
     expires_in: tokenData.expires_in,
+    user_agent: userAgent,
   } as Token;
 
   const hasAccount = await findUserBySpotifyID(formattedUserData.spotify_id);
