@@ -7,6 +7,7 @@ export function useSpotifyApi() {
   let code = "" as string | null;
   let token = "" as string | null;
   let verifier = "" as string;
+  let deviceID= null as string | null;
   let loading = true;
   let error: string | null = null;
 
@@ -42,8 +43,9 @@ export function useSpotifyApi() {
         loading = false;
         throw new Error("No authorization code received");
       }
-
-      await getAccessToken(CLIENT_ID, code);
+      
+      deviceID = await Storage.get("deviceID");
+      await getAccessToken(CLIENT_ID, code, deviceID);
       loading = false;
 
       setTimeout(() => {
@@ -85,12 +87,18 @@ export function useSpotifyApi() {
       .replace(/=+$/, "");
   }
 
-  async function getAccessToken(clientId: string, code: string): Promise<string | null> {
+  async function getAccessToken(clientId: string, code: string, deviceID: string | null): Promise<string | null> {
+    deviceID = await Storage.get("deviceID");
+    if(deviceID === null) {
+      deviceID = crypto.randomUUID();
+      await Storage.set("deviceID", deviceID);
+    }
     const verifier = await Storage.get('verifier');
     const result = await SpotifyApi.getAccessToken(
       clientId,
       code,
-      verifier as string
+      verifier as string,
+      deviceID as string,
     );
 
     if (!result.ok) {

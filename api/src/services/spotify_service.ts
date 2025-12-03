@@ -1,10 +1,10 @@
-import { createToken, findRefreshToken } from '../repositories/token_repositories.js';
+import { createToken, findRefreshToken, findUserAgent } from '../repositories/token_repositories.js';
 import type { User } from '@prisma/client';
 import type { Token } from '@prisma/client';
 import { createUser, findUserBySpotifyID } from '../repositories/user_repository.js';
 import * as spotifyApi from '../utils/spotify.js';
 
-export const getRefreshToken = async (clientId: string, code: string, verifier: string, userAgent: string) => {
+export const getRefreshToken = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
   const tokenData = await spotifyApi.getRefreshToken(clientId, code, verifier);
   const userData = await spotifyApi.getUserProfile(tokenData.access_token.toString());
 
@@ -20,16 +20,18 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
     refresh_token: tokenData.refresh_token,
     expires_in: tokenData.expires_in,
     user_agent: userAgent,
+    device_id: deviceID,
   } as Token;
 
   const haveAccount = await findUserBySpotifyID(formattedUserData.spotify_id);
   const refreshTokenExists = await findRefreshToken(formattedTokenData.refresh_token);
+  const newDevice = await findUserAgent(formattedTokenData.refresh_token, formattedTokenData.user_agent, formattedTokenData.device_id);
 
   if(!haveAccount){
     await createUser(formattedUserData, formattedTokenData);
   }
 
-  if(haveAccount && !refreshTokenExists) {
+  if(haveAccount && (!refreshTokenExists || newDevice)) {
     await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
 
