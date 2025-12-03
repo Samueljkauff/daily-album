@@ -22,14 +22,14 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
     user_agent: userAgent,
   } as Token;
 
-  const hasAccount = await findUserBySpotifyID(formattedUserData.spotify_id);
+  const haveAccount = await findUserBySpotifyID(formattedUserData.spotify_id);
   const refreshTokenExists = await findRefreshToken(formattedTokenData.refresh_token);
 
-  if(!hasAccount){
+  if(!haveAccount){
     await createUser(formattedUserData, formattedTokenData);
   }
 
-  if(hasAccount && !refreshTokenExists) {
+  if(haveAccount && !refreshTokenExists) {
     await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
 
