@@ -21,20 +21,20 @@ export const createToken = async (token: Token, userId: string): Promise<Token> 
     }
 };
 
-export const findRefreshToken = async (refreshToken: string): Promise<boolean> => {
+export const findRefreshToken = async (refreshToken: string): Promise<any> => {
     try {
         const token = await prisma.token.findUnique({
             where: {
                 refresh_token: refreshToken
             }
         });
-        return token !== null;
+        return token;
     } catch(error) {
         throw error;
     }
 };
 
-export const findDevice = async (userId: string, userAgent: string | null, deviceId: string): Promise<any> => {
+export const findDevice = async (userId: string, userAgent: string | null, deviceId: string): Promise<boolean> => {
     try {
         const devices = await prisma.token.findMany({
             where: {
@@ -46,18 +46,21 @@ export const findDevice = async (userId: string, userAgent: string | null, devic
             }
         });
 
-        return devices;
+        return devices.length >= 1;
     } catch(error) {
         throw error;
     }
 }
 
-export const removeOldTokens = async (user_agent: string | null, deviceId: string) => {
+export const removeOldTokens = async (userId: string, user_agent: string | null, deviceId: string) => {
     try {
         const deleted = await prisma.token.deleteMany({
             where: {
-                user_agent: user_agent,
-                device_id: deviceId,
+                user_id: userId,
+            OR: [
+                { user_agent: user_agent },
+                { device_id: deviceId },
+            ]
             }
         });
         return deleted;

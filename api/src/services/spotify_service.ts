@@ -25,14 +25,14 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
 
   const user = await findUserBySpotifyID(formattedUserData.spotify_id);
   const refreshTokenExists = await findRefreshToken(formattedTokenData.refresh_token);
-  const deviceExist = await findDevice(formattedTokenData.user_id, formattedTokenData.user_agent, formattedTokenData.device_id);
+  const deviceExist = await findDevice(formattedUserData.spotify_id, formattedTokenData.user_agent, formattedTokenData.device_id);
   if(!user){
     await createUser(formattedUserData, formattedTokenData);
   }
 
 
   if(!refreshTokenExists || deviceExist) {
-    await removeOldTokens(formattedTokenData.user_agent, formattedTokenData.device_id);
+    await removeOldTokens(formattedUserData.spotify_id, formattedTokenData.user_agent, formattedTokenData.device_id);
     await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
 
