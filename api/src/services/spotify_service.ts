@@ -1,4 +1,4 @@
-import { createToken, findRefreshToken, findUserAgent } from '../repositories/token_repositories.js';
+import { createToken, findRefreshToken, findDevice, removeOldTokens } from '../repositories/token_repositories.js';
 import type { User } from '@prisma/client';
 import type { Token } from '@prisma/client';
 import { createUser, findUserBySpotifyID } from '../repositories/user_repository.js';
@@ -23,15 +23,16 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
     device_id: deviceID,
   } as Token;
 
-  const haveAccount = await findUserBySpotifyID(formattedUserData.spotify_id);
+  const user = await findUserBySpotifyID(formattedUserData.spotify_id);
   const refreshTokenExists = await findRefreshToken(formattedTokenData.refresh_token);
-  const newDevice = await findUserAgent(formattedTokenData.refresh_token, formattedTokenData.user_agent, formattedTokenData.device_id);
-
-  if(!haveAccount){
+  const deviceExist = await findDevice(formattedTokenData.user_id, formattedTokenData.user_agent, formattedTokenData.device_id);
+  if(!user){
     await createUser(formattedUserData, formattedTokenData);
   }
 
-  if(haveAccount && (!refreshTokenExists || newDevice)) {
+
+  if(!refreshTokenExists || deviceExist) {
+    await removeOldTokens(formattedTokenData.user_agent, formattedTokenData.device_id);
     await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
 

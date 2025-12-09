@@ -34,30 +34,30 @@ export const findRefreshToken = async (refreshToken: string): Promise<boolean> =
     }
 };
 
-export const findUserAgent = async (refreshToken: string, userAgent: string | null, device_id: string): Promise<boolean> => {
+export const findDevice = async (userId: string, userAgent: string | null, deviceId: string): Promise<any> => {
     try {
-        const result = await prisma.token.findMany({
+        const devices = await prisma.token.findMany({
             where: {
-                user_agent: userAgent,
-                device_id: device_id,
+                user_id: userId,
+                OR: [
+                    { user_agent: userAgent },
+                    { device_id: deviceId }
+                ]
             }
         });
 
-        for(let i = 0; i <= result.length; i++){
-            if(result[i]?.refresh_token !== refreshToken && result[i]?.user_agent === userAgent){
-            }
-        }
-        return result.length < 1;
+        return devices;
     } catch(error) {
         throw error;
     }
 }
 
-export const removeOldTokens = async (user_agent: string) => {
+export const removeOldTokens = async (user_agent: string | null, deviceId: string) => {
     try {
-        const deleted = prisma.token.deleteMany({
+        const deleted = await prisma.token.deleteMany({
             where: {
                 user_agent: user_agent,
+                device_id: deviceId,
             }
         });
         return deleted;
