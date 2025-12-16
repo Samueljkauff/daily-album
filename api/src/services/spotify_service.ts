@@ -40,5 +40,5 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
 
   const JWT = generateJWT(formattedUserData.spotify_id, formattedTokenData.device_id);
 
-  return JWT;
+  return tokenData;
 }
