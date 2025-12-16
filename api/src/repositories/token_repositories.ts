@@ -69,14 +69,16 @@ export const removeOldTokens = async (userId: string, user_agent: string | null,
     }
 }
 
-export const isTokenExpired = async (userId: string, deviceId: string) => {
+export const getTokenByUserIdandDeviceId = async (userId: string, deviceId: string) => {
     try {
-        const token = await prisma.token.findMany({
+        const token = await prisma.token.findFirst({
             where: {
                 user_id: userId,
-                device_id: deviceId ,
+                device_id: deviceId,
+                revoked: false,
             }
         });
+        return token;
     } catch (error) {
         throw error;
     }
