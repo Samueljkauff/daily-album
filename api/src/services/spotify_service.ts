@@ -7,6 +7,8 @@ import * as spotifyApi from '../utils/spotify.js';
 export const getRefreshToken = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
   const tokenData = await spotifyApi.getRefreshToken(clientId, code, verifier);
   const userData = await spotifyApi.getUserProfile(tokenData.access_token.toString());
+  const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);
+
 
   const formattedUserData = {
     spotify_id: userData.id,
@@ -14,11 +16,10 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
     email: userData.email,
     avatar_url: userData.images?.[0]?.url || userData.images?.[1]?.url || null,
   } as User;
-
   const formattedTokenData = {
     access_token: tokenData.access_token,
     refresh_token: tokenData.refresh_token,
-    expires_in: tokenData.expires_in,
+    expires_at: expiresAt,
     user_agent: userAgent,
     device_id: deviceID,
   } as Token;

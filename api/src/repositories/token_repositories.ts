@@ -7,7 +7,7 @@ export const createToken = async (token: Token, userId: string): Promise<Token> 
             data: {
             access_token: token.access_token,
             refresh_token: token.refresh_token,
-            expires_in: token.expires_in,
+            expires_at: token.expires_at,
             user_agent: token.user_agent,
             device_id: token.device_id,
             user: {
@@ -65,6 +65,19 @@ export const removeOldTokens = async (userId: string, user_agent: string | null,
         });
         return deleted;
     } catch(error) {
+        throw error;
+    }
+}
+
+export const isTokenExpired = async (userId: string, deviceId: string) => {
+    try {
+        const token = await prisma.token.findMany({
+            where: {
+                user_id: userId,
+                device_id: deviceId ,
+            }
+        });
+    } catch (error) {
         throw error;
     }
 }
