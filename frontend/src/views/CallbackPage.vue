@@ -50,7 +50,6 @@ export default {
     const { setUser } = useAuth();
     const user = await this.spotifyApi.handleRedirectCallBack();
     setUser(user);
-
   }
 }
 </script>

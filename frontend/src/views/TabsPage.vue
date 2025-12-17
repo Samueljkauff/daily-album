@@ -22,7 +22,24 @@
   </ion-page>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { useAuth } from '@/composables/useAuth';
-import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonPage, IonRouterOutlet } from '@ionic/vue';
+import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonPage, IonRouterOutlet, IonTab } from '@ionic/vue';
+
+export default {
+  setup() {
+    const auth = useAuth();
+
+    return { auth };
+  },
+  components: {
+    IonTabBar,
+    IonTabButton,
+    IonTabs,
+    IonLabel,
+    IonPage,
+    IonRouterOutlet,
+    IonTab
+  }
+}
 </script>
