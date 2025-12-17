@@ -3,6 +3,6 @@ import * as SpotifyController from "../controllers/spotify_controller.js";
 
 const router = Router();
 
-router.post('/spotify/refresh', SpotifyController.getRefreshToken);
+router.post('/spotify/user', SpotifyController.getSpotifyUser);
 
 export default router;

@@ -42,10 +42,11 @@ export default {
   },
   setup() {
     const spotifyApi = useSpotifyApi();
+
     return { spotifyApi };
   },
   mounted() {
-    this.spotifyApi.handleRedirectCallBack();
+    const user = this.spotifyApi.handleRedirectCallBack();
   }
 }
 </script>

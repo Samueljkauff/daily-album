@@ -11,7 +11,7 @@ export const authFlow = (clientId: string, challenge: string) => {
     window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
 }
 
-export const getAccessToken = async (clientId: string, accessCode: string, verifier: string, deviceID: string) => {
+export const getUser = async (clientId: string, accessCode: string, verifier: string, deviceID: string) => {
     const userAgent = navigator.userAgent;
     const params = new URLSearchParams();
     params.append("client_id", clientId);
@@ -22,7 +22,7 @@ export const getAccessToken = async (clientId: string, accessCode: string, verif
     params.append("user_agent", userAgent);
     params.append("device_id", deviceID);
 
-    const response = await fetch("http://localhost:2121/api/spotify/refresh", {
+    const response = await fetch("http://localhost:2121/api/spotify/user", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: params

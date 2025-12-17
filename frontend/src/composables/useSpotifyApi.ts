@@ -1,11 +1,13 @@
 import { Router, useRouter } from "vue-router";
 import * as SpotifyApi from "../services/spotify-api";
 import { Storage } from "../services/storage";
+import { User } from "@/interfaces/user_interface";
+import { useAuth } from '@/composables/useAuth';
 
 export function useSpotifyApi() {
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID as string;
   let code = "" as string | null;
-  let token = "" as string | null;
+  let user = {} as User;
   let verifier = "" as string;
   let deviceID= null as string | null;
   let loading = true;
@@ -20,7 +22,7 @@ export function useSpotifyApi() {
     SpotifyApi.authFlow(CLIENT_ID, challenge);
   }
 
-  async function handleRedirectCallBack(): Promise<string> {
+  async function handleRedirectCallBack(): Promise<any> {
     const router = useRouter();
     const response = new URLSearchParams(window.location.search);
     code = response.get("code");
@@ -45,7 +47,7 @@ export function useSpotifyApi() {
       }
       
       deviceID = await Storage.get("deviceID");
-      await getAccessToken(CLIENT_ID, code, deviceID);
+      user = await getUser(CLIENT_ID, code, deviceID);
       loading = false;
 
       setTimeout(() => {
@@ -58,7 +60,8 @@ export function useSpotifyApi() {
       console.error(err);
       error = err instanceof Error ? err.message : "Unknown error occurred";
     }
-    return code as string;
+
+    return user;
   }
 
   function retry(router: Router) {
@@ -87,14 +90,14 @@ export function useSpotifyApi() {
       .replace(/=+$/, "");
   }
 
-  async function getAccessToken(clientId: string, code: string, deviceID: string | null): Promise<string | null> {
+  async function getUser(clientId: string, code: string, deviceID: string | null): Promise<User> {
     deviceID = await Storage.get("deviceID");
     if(deviceID === null) {
       deviceID = crypto.randomUUID();
       await Storage.set("deviceID", deviceID);
     }
     const verifier = await Storage.get('verifier');
-    const result = await SpotifyApi.getAccessToken(
+    const result = await SpotifyApi.getUser(
       clientId,
       code,
       verifier as string,
@@ -103,24 +106,23 @@ export function useSpotifyApi() {
 
     if (!result.ok) {
       const errorText = await result.text();
-      console.error("Spotify token error:", errorText);
-      throw new Error(`Token request failed (${result.status})`);
+      console.error("Spotify User error:", errorText);
+      throw new Error(`User request failed (${result.status})`);
     }
 
-    const { access_token } = await result.json();
-    await Storage.set('token', access_token);
-    token = await Storage.get('token');
-
-    return token as string;
+    user = await result.json();
+    
+    return user;
   }
 
-  async function fetchUserProfile(token: string | null): Promise<any> {}
-  async function populateUI(profile: any) {}
+  async function populateUI(profile: any) {
+
+  }
 
   return {
     redirectToAuthCodeFlow,
     CLIENT_ID,
-    getAccessToken,
+    getUser,
     handleRedirectCallBack,
     loading,
     error,

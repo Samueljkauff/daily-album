@@ -5,7 +5,7 @@ import { createUser, findUserBySpotifyID } from '../repositories/user_repository
 import * as spotifyApi from '../utils/spotify.js';
 import { generateJWT } from '../auth/auth_service.js';
 
-export const getRefreshToken = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
+export const getSpotifyUser = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
   const tokenData = await spotifyApi.getRefreshToken(clientId, code, verifier);
   const userData = await spotifyApi.getUserProfile(tokenData.access_token.toString());
   const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);
@@ -16,6 +16,7 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
     username: userData.display_name,
     email: userData.email,
     avatar_url: userData.images?.[0]?.url || userData.images?.[1]?.url || null,
+    created_at: new Date(),
   } as User;
   const formattedTokenData = {
     access_token: tokenData.access_token,
@@ -37,8 +38,13 @@ export const getRefreshToken = async (clientId: string, code: string, verifier: 
     await removeOldTokens(formattedUserData.spotify_id, formattedTokenData.user_agent, formattedTokenData.device_id);
     await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
-
-  const JWT = generateJWT(formattedUserData.spotify_id, formattedTokenData.device_id);
-
-  return tokenData;
+  const JWT = generateJWT(formattedUserData.spotify_id, formattedTokenData.device_id) as string
+  const response = {
+    JWT: JWT,
+    username: formattedUserData.username,
+    email: formattedUserData.email,
+    avatar_url: formattedUserData.avatar_url,
+    created_at: formattedUserData.created_at,
+}
+  return response;
 }
