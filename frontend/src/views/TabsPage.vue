@@ -23,5 +23,6 @@
 </template>
 
 <script setup lang="ts">
+import { useAuth } from '@/composables/useAuth';
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonPage, IonRouterOutlet } from '@ionic/vue';
 </script>

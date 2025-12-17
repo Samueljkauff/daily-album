@@ -32,6 +32,7 @@ import {
   IonButton
 } from '@ionic/vue';
 import { useSpotifyApi } from '@/composables/useSpotifyApi';
+import { useAuth } from '@/composables/useAuth';
 
 export default {
   components: {
@@ -45,8 +46,11 @@ export default {
 
     return { spotifyApi };
   },
-  mounted() {
-    const user = this.spotifyApi.handleRedirectCallBack();
+  async mounted() {
+    const { setUser } = useAuth();
+    const user = await this.spotifyApi.handleRedirectCallBack();
+    setUser(user);
+
   }
 }
 </script>
