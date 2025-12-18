@@ -23,7 +23,7 @@
             <img :src="dailyAlbumUrl"></img>
           </ion-avatar>
           <h1 class="album-name-spacing">Spiderland</h1>
-          <h2>By Slint</h2>
+          <h2>Slint</h2>
           <ion-button class="button-styling">Listen now</ion-button>
         </ion-card-content>
       </ion-card>
