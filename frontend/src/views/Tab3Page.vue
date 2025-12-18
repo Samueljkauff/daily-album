@@ -19,15 +19,15 @@
           />
         </ion-avatar>
         <ion-card-header>
-          <ion-button fill="outline" size="small">{{
-            auth.user.value?.data.email ?? "Email@gmail.com"
-          }}</ion-button>
           <ion-card-title>{{
             auth.user.value?.data.username ?? "Username"
           }}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          Description
+            <ion-button fill="outline" size="small" class="button">{{
+              auth.user.value?.data.email ?? "Email@gmail.com"
+          }}</ion-button>
+          <p>Mood</p>
         </ion-card-content>
       </ion-card>
       <ion-card class="container">
@@ -92,5 +92,9 @@ export default {
   width: 40%;
   height: auto;
   margin: 1rem;
+}
+
+.button {
+  display: block;
 }
 </style>
