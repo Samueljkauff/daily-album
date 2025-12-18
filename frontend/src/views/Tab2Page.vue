@@ -22,9 +22,9 @@
           <ion-avatar>
             <img :src="dailyAlbumUrl"></img>
           </ion-avatar>
-          <h1>Spiderland</h1>
+          <h1 class="album-name-spacing">Spiderland</h1>
           <h2>By Slint</h2>
-          <ion-button>Listen now</ion-button>
+          <ion-button class="button-styling">Listen now</ion-button>
         </ion-card-content>
       </ion-card>
       </div>
@@ -80,6 +80,14 @@ export default {
   place-items: center;
   height: auto;
   width: auto;
+}
+
+.album-name-spacing {
+  margin-top: .5rem;
+}
+
+.button-styling {
+  margin-top: 2rem;
 }
 
 </style>
