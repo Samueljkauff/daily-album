@@ -1,23 +1,23 @@
 
-export const authFlow = (clientId: string, challenge: string) => {
+export const authFlow = (clientId: string, challenge: string, redirect: string) => {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "https://127.0.0.1:3000/callback");
+    params.append("redirect_uri", redirect);
     params.append("scope", "user-read-private user-read-email");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
 
     window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
-}
+};
 
-export const getUser = async (clientId: string, accessCode: string, verifier: string, deviceID: string) => {
+export const getUser = async (clientId: string, accessCode: string, verifier: string, deviceID: string, redirect: string) => {
     const userAgent = navigator.userAgent;
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", accessCode);
-    params.append("redirect_uri", "https://127.0.0.1:3000/callback");
+    params.append("redirect_uri", redirect);
     params.append("code_verifier", verifier!);
     params.append("user_agent", userAgent);
     params.append("device_id", deviceID);

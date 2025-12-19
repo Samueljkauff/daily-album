@@ -33,6 +33,7 @@ import {
 } from '@ionic/vue';
 import { useSpotifyApi } from '@/composables/useSpotifyApi';
 import { useAuth } from '@/composables/useAuth';
+import router from '@/router';
 
 export default {
   components: {
@@ -50,6 +51,10 @@ export default {
     const { setUser } = useAuth();
     const user = await this.spotifyApi.handleRedirectCallBack();
     setUser(user);
+      setTimeout(() => {
+        router.push("/tabs/tab2");
+      }, 2000);
+
   }
 }
 </script>

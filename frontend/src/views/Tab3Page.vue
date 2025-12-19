@@ -55,7 +55,12 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonButton
+  IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonAvatar
 } from "@ionic/vue";
 import { useAuth } from "@/composables/useAuth";
 
@@ -76,6 +81,11 @@ export default {
     IonContent,
     IonPage,
     IonButton,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonAvatar,
   },
 };
 </script>

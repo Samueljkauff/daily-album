@@ -2,7 +2,7 @@ import { Router, useRouter } from "vue-router";
 import * as SpotifyApi from "../services/spotify-api";
 import { Storage } from "../services/storage";
 import { User } from "@/interfaces/user_interface";
-import { useAuth } from '@/composables/useAuth';
+import { DeviceCheck } from "@/services/device-check";
 
 export function useSpotifyApi() {
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID as string;
@@ -11,15 +11,21 @@ export function useSpotifyApi() {
   let verifier = "" as string;
   let deviceID= null as string | null;
   let loading = true;
-  let error: string | null = null;
+  let error= null as string | null ;
+  let isMobile= true as boolean;
+  let redirect= "" as string;
+
 
   async function redirectToAuthCodeFlow(client_id: string) {
+    isMobile= DeviceCheck.isMobile();
+    redirect= (isMobile) ? "daily-album://callback" : "https://127.0.0.1:3000/callback"
     verifier = await generateCodeVerifier(128);
     const challenge = await generateCodeChallenge(verifier);
 
     await Storage.set('verifier', verifier);
+    await Storage.set('redirect', redirect);
 
-    SpotifyApi.authFlow(CLIENT_ID, challenge);
+    SpotifyApi.authFlow(CLIENT_ID, challenge, redirect);
   }
 
   async function handleRedirectCallBack(): Promise<any> {
@@ -47,12 +53,10 @@ export function useSpotifyApi() {
       }
       
       deviceID = await Storage.get("deviceID");
-      user = await getUser(CLIENT_ID, code, deviceID);
+      redirect = await Storage.get("redirect") as string;
+      
+      user = await getUser(CLIENT_ID, code, deviceID, redirect);
       loading = false;
-
-      setTimeout(() => {
-        router.push("/tabs/tab2");
-      }, 2000);
 
     } catch (err) {
       retry(router);
@@ -90,7 +94,8 @@ export function useSpotifyApi() {
       .replace(/=+$/, "");
   }
 
-  async function getUser(clientId: string, code: string, deviceID: string | null): Promise<User> {
+  async function getUser(clientId: string, code: string, deviceID: string | null, redirect: string): Promise<User> {
+    console.log(redirect)
     deviceID = await Storage.get("deviceID");
     if(deviceID === null) {
       deviceID = crypto.randomUUID();
@@ -102,6 +107,7 @@ export function useSpotifyApi() {
       code,
       verifier as string,
       deviceID as string,
+      redirect as string,
     );
 
     if (!result.ok) {

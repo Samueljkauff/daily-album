@@ -1,9 +1,12 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.dailyalbum.app',
   appName: 'Daily Album',
-  webDir: 'dist'
+  webDir: 'dist',
+  server: {
+    iosScheme: 'daily-album'
+  }
 };
 
 export default config;
