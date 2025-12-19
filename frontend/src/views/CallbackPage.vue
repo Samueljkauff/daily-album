@@ -31,7 +31,7 @@ import {
   IonSpinner, 
   IonButton
 } from '@ionic/vue';
-import { useSpotifyApi } from '@/composables/useSpotifyApi';
+import { useSpotifyApi } from '@/composables/useAuthApi';
 import { useAuth } from '@/composables/useAuth';
 import router from '@/router';
 
@@ -49,8 +49,8 @@ export default {
   },
   async mounted() {
     const { setUser } = useAuth();
-    const user = await this.spotifyApi.handleRedirectCallBack();
-    setUser(user);
+    const userData = await this.spotifyApi.authBootsrap();
+    setUser(userData);
       setTimeout(() => {
         router.push("/tabs/tab2");
       }, 2000);

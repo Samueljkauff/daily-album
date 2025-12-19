@@ -21,7 +21,7 @@ import { defineComponent } from 'vue';
 import { IonContent, IonPage, IonButton } from '@ionic/vue';
 import SpotifyIcon from '@Icons/Spotify_icon.svg';
 import DailyAlbumIcon from '@Icons/DailyAlbum_icon.svg';
-import { useSpotifyApi } from '@/composables/useSpotifyApi';
+import { useSpotifyApi } from '@/composables/useAuthApi';
 
 export default defineComponent({
   components: {

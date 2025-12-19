@@ -24,25 +24,50 @@
           }}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            <ion-button fill="outline" size="small" class="button">{{
-              auth.user.value?.data.email ?? "Email@gmail.com"
+          <ion-button fill="outline" size="small" class="button">{{
+            auth.user.value?.data.email ?? "Email@gmail.com"
           }}</ion-button>
           <p>Mood</p>
         </ion-card-content>
       </ion-card>
-      <ion-card class="container">
+      <ion-card>
         <ion-card-header>
-          <ion-card-title>
-            Top Genres:
-          </ion-card-title>
+          <ion-card-title> Top Genres: </ion-card-title>
         </ion-card-header>
+        <ion-list>
+          <ion-item>
+            <ion-label>1. Midwest emo</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>2. Alternative Rock</ion-label>
+          </ion-item>
+        </ion-list>
       </ion-card>
-      <ion-card class="container">
+      <ion-card>
         <ion-card-header>
-          <ion-card-title>
-            Top Artists:
-          </ion-card-title>
+          <ion-card-title>Top Artists: </ion-card-title>
         </ion-card-header>
+        <ion-list>
+          <ion-item>
+            <ion-label>1. Radiohead</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>2. Slint</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title> Stats </ion-card-title>
+        </ion-card-header>
+        <ion-list>
+          <ion-item>
+            <ion-label>Account created: 73 days ago</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Albums Listened: 67</ion-label>
+          </ion-item>
+        </ion-list>
       </ion-card>
     </ion-content>
   </ion-page>
@@ -60,7 +85,10 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonAvatar
+  IonAvatar,
+  IonList,
+  IonItem,
+  IonLabel,
 } from "@ionic/vue";
 import { useAuth } from "@/composables/useAuth";
 
@@ -86,6 +114,9 @@ export default {
     IonCardTitle,
     IonCardContent,
     IonAvatar,
+    IonList,
+    IonItem,
+    IonLabel,
   },
 };
 </script>
@@ -96,6 +127,10 @@ export default {
   place-items: center;
   height: auto;
   width: auto;
+}
+
+ion-card {
+  border: 0.5px solid var(--border-color);
 }
 
 .pfp {
