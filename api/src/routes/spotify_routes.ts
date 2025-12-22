@@ -5,4 +5,6 @@ const router = Router();
 
 router.post('/spotify/authenticate', SpotifyController.authenticateUser);
 
+// router.post('/spotify/user/profile', SpotifyController.getUser);
+
 export default router;
