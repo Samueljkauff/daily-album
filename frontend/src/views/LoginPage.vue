@@ -7,7 +7,7 @@
         <ion-icon :icon="DailyAlbumIcon"></ion-icon>
           <h1>Welcome to Daily Album!</h1>
           <p>Login with Spotify to get started.</p>
-          <ion-button expand="block" color="success" class="ion-margin-top" @click="spotifyApi.redirectToAuthCodeFlow(spotifyApi.CLIENT_ID)">
+          <ion-button expand="block" color="success" class="ion-margin-top" @click="authApi.redirectToAuthCodeFlow(authApi.CLIENT_ID)">
             Login with Spotify
           </ion-button>
         </div>
@@ -21,7 +21,7 @@ import { defineComponent } from 'vue';
 import { IonContent, IonPage, IonButton } from '@ionic/vue';
 import SpotifyIcon from '@Icons/Spotify_icon.svg';
 import DailyAlbumIcon from '@Icons/DailyAlbum_icon.svg';
-import { useSpotifyApi } from '@/composables/useAuthApi';
+import { useAuthApi } from '@/composables/useAuthApi';
 
 export default defineComponent({
   components: {
@@ -30,11 +30,11 @@ export default defineComponent({
     IonButton,
   },
   setup() {
-    const spotifyApi = useSpotifyApi();
+    const authApi = useAuthApi();
     return {
       SpotifyIcon,
       DailyAlbumIcon,
-      spotifyApi,
+      authApi,
     };
   },
 });

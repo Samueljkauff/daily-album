@@ -4,7 +4,7 @@ import { Storage } from "../services/storage";
 import { User } from "@/interfaces/user_interface";
 import { DeviceCheck } from "@/services/device-check";
 
-export function useSpotifyApi() {
+export function useAuthApi() {
   const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID as string;
   let code = "" as string | null;
   let user = {} as User;

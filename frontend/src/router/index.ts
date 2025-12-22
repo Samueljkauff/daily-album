@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import TabsPage from "@Pages/TabsPage.vue";
 import { useAuth } from "@/composables/useAuth";
-import { Storage } from "@/services/storage";
 
 const requiresAuth = { requiresAuth: true };
 const routes: Array<RouteRecordRaw> = [

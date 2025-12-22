@@ -2,16 +2,16 @@
   <ion-page>
     <ion-content class="callback-content">
       <div class="callback-container">
-        <div v-if="spotifyApi.loading">
+        <div v-if="authApi.loading">
           <ion-spinner></ion-spinner>
           <h2>Processing authentication...</h2>
         </div>
         
-        <div v-else-if="spotifyApi.error">
+        <div v-else-if="authApi.error">
           <ion-icon :icon="$icons.alertCircle" color="danger" size="large"></ion-icon>
           <h2>Authentication failed</h2>
-          <p>{{ spotifyApi.error }}</p>
-          <ion-button @click="spotifyApi.retry">Try Again</ion-button>
+          <p>{{ authApi.error }}</p>
+          <ion-button @click="authApi.retry">Try Again</ion-button>
         </div>
         
         <div v-else>
@@ -31,7 +31,7 @@ import {
   IonSpinner, 
   IonButton
 } from '@ionic/vue';
-import { useSpotifyApi } from '@/composables/useAuthApi';
+import { useAuthApi } from '@/composables/useAuthApi';
 import { useAuth } from '@/composables/useAuth';
 import router from '@/router';
 
@@ -43,13 +43,13 @@ export default {
     IonButton,
   },
   setup() {
-    const spotifyApi = useSpotifyApi();
+    const authApi = useAuthApi();
 
-    return { spotifyApi };
+    return { authApi };
   },
   async mounted() {
     const { setUser } = useAuth();
-    const userData = await this.spotifyApi.authBootsrap();
+    const userData = await this.authApi.authBootsrap();
     setUser(userData);
       setTimeout(() => {
         router.push("/tabs/tab2");
