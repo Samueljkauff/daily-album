@@ -5,7 +5,7 @@ import { createUser, findUserBySpotifyID } from '../repositories/user_repository
 import * as spotifyApi from '../utils/spotify.js';
 import { generateJWT } from '../auth/auth_service.js';
 
-export const getSpotifyUser = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
+export const authenticateUser = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
   const tokenData = await spotifyApi.getRefreshToken(clientId, code, verifier);
   const userData = await spotifyApi.getUserProfile(tokenData.access_token.toString());
   const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);

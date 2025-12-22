@@ -19,6 +19,7 @@ export function useAuthApi() {
   async function redirectToAuthCodeFlow(client_id: string) {
     isMobile= DeviceCheck.isMobile();
     redirect= (isMobile) ? "daily-album://callback" : "https://127.0.0.1:3000/callback"
+    
     verifier = await generateCodeVerifier(128);
     const challenge = await generateCodeChallenge(verifier);
 
@@ -101,7 +102,7 @@ export function useAuthApi() {
       await Storage.set("deviceID", deviceID);
     }
     const verifier = await Storage.get('verifier');
-    const result = await SpotifyApi.getUser(
+    const result = await SpotifyApi.authenticateUser(
       clientId,
       code,
       verifier as string,
