@@ -2,12 +2,12 @@ import { createToken, findRefreshToken, findDevice, removeOldTokens } from '../r
 import type { User } from '@prisma/client';
 import type { Token } from '@prisma/client';
 import { createUser, findUserBySpotifyID } from '../repositories/user_repository.js';
-import * as spotifyApi from '../utils/spotify.js';
+import * as authApi from '../utils/spotify.js';
 import { generateJWT } from '../auth/auth_service.js';
 
 export const authenticateUser = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
-  const tokenData = await spotifyApi.getRefreshToken(clientId, code, verifier);
-  const userData = await spotifyApi.getUserProfile(tokenData.access_token.toString());
+  const tokenData = await authApi.getRefreshToken(clientId, code, verifier);
+  const userData = await authApi.getUserProfile(tokenData.access_token.toString());
   const expiresAt = new Date(Date.now() + tokenData.expires_in * 1000);
 
 

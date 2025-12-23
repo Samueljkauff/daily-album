@@ -1,5 +1,5 @@
 import type { Response, Request } from "express"
-import * as SpotifyService from "../services/spotify_service.js"
+import * as SpotifyService from "../services/auth_service.js"
 
 export const authenticateUser = async (req: Request, res: Response) => {
     try {
