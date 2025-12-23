@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import spotifyRouter from "./routes/spotify_routes.js";
+import authRouter from "./routes/auth_routes.js";
 
 const app = express();
 
@@ -14,6 +14,6 @@ app.get("/", (req, res) => {
     res.json({ message: "API up and running!"})
 });
 
-app.use("/api", spotifyRouter);
+app.use("/api", authRouter);
 
 export default app;

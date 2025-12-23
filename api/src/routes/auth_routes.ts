@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as SpotifyController from "../controllers/spotify_controller.js";
+import * as SpotifyController from "../controllers/auth_controller.js";
 
 const router = Router();
 
