@@ -34,6 +34,7 @@ import {
 import { useAuthApi } from '@/composables/useAuthApi';
 import { useAuth } from '@/composables/useAuth';
 import router from '@/router';
+import { Storage } from '@/services/storage';
 
 export default {
   components: {
@@ -44,14 +45,16 @@ export default {
   },
   setup() {
     const authApi = useAuthApi();
-
+    Storage.set("auth-flow", "true");
     return { authApi };
   },
   async mounted() {
     const { setUser } = useAuth();
     const userData = await this.authApi.authBootsrap();
+    await Storage.set("jwt", userData.data.JWT as string);
     setUser(userData);
       setTimeout(() => {
+        Storage.set("auth-flow", "false");
         router.push("/tabs/tab2");
       }, 2000);
 

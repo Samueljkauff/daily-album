@@ -29,7 +29,7 @@ import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonPage, IonRouterOutlet, I
 export default {
   setup() {
     const auth = useAuth();
-
+    
     return { auth };
   },
   components: {

@@ -22,7 +22,7 @@ export const authenticateUser = async (clientId: string, accessCode: string, ver
     params.append("user_agent", userAgent);
     params.append("device_id", deviceID);
 
-    const response = await fetch("http://localhost:2121/api/spotify/authenticate", {
+    const response = await fetch("http://localhost:2121/api/auth/authenticate", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: params
