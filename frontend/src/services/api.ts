@@ -4,8 +4,7 @@ export const getUser = async (jwt: string): Promise<User> => {
   const res = await fetch("http://localhost:2121/api/users/profile", {
     method: "GET",
     headers: {"Content-Type": "application/json",
-              "Authorization": `Bearer ${jwt}`,
-    }
+              "Authorization": `Bearer ${jwt}`, }
   });
-  return res.json();
+  return await res.json();
 }

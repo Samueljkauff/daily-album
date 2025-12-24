@@ -3,7 +3,6 @@ import { RouteRecordRaw } from "vue-router";
 import TabsPage from "@Pages/TabsPage.vue";
 import { useAuth } from "@/composables/useAuth";
 import { Storage } from "@/services/storage";
-import { authFlow } from "@/services/spotify-api";
 
 const requiresAuth = { requiresAuth: true };
 const routes: Array<RouteRecordRaw> = [
@@ -60,12 +59,12 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   const auth = useAuth();
   const inAuthFlow = await Storage.get("auth-flow") as unknown as boolean;
-
+  console.log("path info:", to.path, auth.user.value)
   if (!auth.authReady.value) {
     return true;
   }
 
-  if (to.meta.requiresAuth && !auth.user.value) {
+  if (to.meta.requiresAuth && auth.user.value == null) {
     return '/login';
   }
 
