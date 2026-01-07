@@ -1,12 +1,6 @@
 import jwt from "jsonwebtoken"
-import type { Request, Response, NextFunction } from "express"
-
-export interface AuthenticatedRequest extends Request {
-  auth?: {
-    userId: string;
-    deviceId: string;
-  };
-}
+import type { Response, NextFunction } from "express"
+import type { AuthenticatedRequest } from "../interface/auth.type.js";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -15,7 +9,6 @@ if(!JWT_SECRET) {
 }
 
 export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-
   const header = req.headers.authorization;
   
   if(!header || !header.startsWith("Bearer")) {
@@ -34,7 +27,6 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
       userId: payload.user_id,
       deviceId: payload.device_id,
     };
-
     next();
   } catch(err) {
     return res.status(401).json({error: "Invalid or expired token"})

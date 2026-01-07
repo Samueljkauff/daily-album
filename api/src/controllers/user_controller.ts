@@ -1,13 +1,11 @@
 import type { Response, Request } from "express";
-// import * as UserService from "../services/user_service.js";
+import { getUserProfile } from "../services/user_service.js";
+import type { AuthenticatedRequest } from "../interface/auth.type.js";
 
-export const getUser = async ( req: Request, res: Response) => {
+export const getUser = async ( req: AuthenticatedRequest, res: Response) => {
     try {
-        const jwt = req.header('Authorization')?.split(' ')[1];
-        if(!jwt) {
-            return res.status(401).json({ message: 'Authentication required' });
-        }
-        
+        const user_id = req.auth?.userId as string;
+        const profile = await getUserProfile(user_id);
     } catch(err: any) {
         console.log(err, res.status);
     }  
