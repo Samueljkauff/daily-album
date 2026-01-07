@@ -19,14 +19,14 @@ export const createUser = async (user: User, token: Token): Promise<User> => {
   }
 };
 
-export const findUserBySpotifyID = async (spotify_id: string): Promise<boolean> => {
+export const findUserBySpotifyID = async (spotify_id: string) => {
     try {
     const user = await prisma.user.findUnique({
         where: {
             spotify_id: spotify_id
         }
     });
-        return user !== null;
+        return user || null;
     } catch (error){
         throw error;
     }
