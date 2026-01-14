@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import authRouter from "./routes/auth_routes.js";
-import userRouter from "./routes/user_routes.js"
-;
+import userRouter from "./routes/user_routes.js";
+
 const app = express();
 
 app.use(cors());

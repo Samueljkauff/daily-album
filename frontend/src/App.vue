@@ -15,7 +15,9 @@ export default {
     const auth = useAuth();
 
     onMounted(() => {
+      console.log("before", auth.user.value?.data);
       auth.restoreSession();
+      console.log("after", auth.user.value?.data);
     })
 
     return { auth };

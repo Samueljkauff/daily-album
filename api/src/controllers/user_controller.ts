@@ -6,7 +6,7 @@ export const getUser = async ( req: AuthenticatedRequest, res: Response) => {
     try {
         const user_id = req.auth?.userId as string;
         const profile = await getUserProfile(user_id);
-        res.status(200).json({ profile })
+        res.status(200).json({ profile });
     } catch(err: any) {
         console.log(err, res.status);
     }  

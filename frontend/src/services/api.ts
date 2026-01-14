@@ -6,5 +6,5 @@ export const getUser = async (jwt: string): Promise<User> => {
     headers: {"Content-Type": "application/json",
               "Authorization": `Bearer ${jwt}`, }
   });
-  return await res.json();
+  return res.json();
 }
