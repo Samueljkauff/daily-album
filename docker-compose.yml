@@ -4,7 +4,7 @@ services:
     ports:
       - "2121:2121"
     env_file:
-      - .env
+      - api/.env
     depends_on:
       - db
     volumes:
@@ -14,7 +14,7 @@ services:
   db:
     image: postgres:16
     env_file:
-      - .env
+      - db.env
     volumes:
       - pgdata:/var/lib/postgresql/data
 
