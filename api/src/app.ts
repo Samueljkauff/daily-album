@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import authRouter from "./routes/auth_routes.js";
 import userRouter from "./routes/user_routes.js";
+import healthRouter from "./routes/health_routes.js";
 
 const app = express();
 
@@ -18,5 +19,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 
 app.use("/api/users", userRouter);
+
+app.use(healthRouter);
 
 export default app;
