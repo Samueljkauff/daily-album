@@ -21,9 +21,7 @@ export function useAuth() {
 
     if(sessionToken) {
       userData = await getUser(sessionToken);
-      console.log(userData)
       user.value = userData;
-      console.log(user.value);
     } else {
       clearUser();
     }
