@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken"
 import type { Response, NextFunction } from "express"
 import type { AuthenticatedRequest } from "../interface/auth.type.js";
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+const ACCESS_JWT_SECRET = process.env.ACCESS_JWT_SECRET as string;
 
-if(!JWT_SECRET) {
+if(!ACCESS_JWT_SECRET) {
     throw new Error("No JWT Secret found.");
 }
 
@@ -18,7 +18,7 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
   const token = header.split(" ")[1] as string;
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as {
+    const payload = jwt.verify(token, ACCESS_JWT_SECRET) as {
       user_id: string;
       device_id: string;
     }

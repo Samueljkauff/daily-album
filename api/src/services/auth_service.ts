@@ -18,6 +18,7 @@ export const authenticateUser = async (clientId: string, code: string, verifier:
     avatar_url: userData.images?.[0]?.url || userData.images?.[1]?.url || null,
     created_at: new Date(),
   } as User;
+  
   const formattedTokenData = {
     access_token: tokenData.access_token,
     refresh_token: tokenData.refresh_token,
@@ -38,9 +39,10 @@ export const authenticateUser = async (clientId: string, code: string, verifier:
     await removeOldTokens(formattedUserData.spotify_id, formattedTokenData.user_agent, formattedTokenData.device_id);
     await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
-  const JWT = generateJWT(formattedUserData.spotify_id, formattedTokenData.device_id) as string
+  const { accessToken, refreshToken } = generateJWT(formattedUserData.spotify_id, formattedTokenData.device_id);
   const response = {
-    JWT: JWT,
+    access_token: accessToken,
+    refreshToken: refreshToken,
     username: formattedUserData.username,
     email: formattedUserData.email,
     avatar_url: formattedUserData.avatar_url,
