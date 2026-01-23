@@ -17,7 +17,7 @@ export function useAuth() {
 
   async function restoreSession() {
     let userData;
-    const sessionToken = await Storage.get("jwt");
+    const sessionToken = await Storage.get("access_token");
 
     if(sessionToken) {
       userData = await getUser(sessionToken);

@@ -51,7 +51,7 @@ export default {
   async mounted() {
     const { setUser } = useAuth();
     const userData = await this.authApi.authBootsrap();
-    await Storage.set("jwt", userData.data.JWT as string);
+    await Storage.set("access_token", userData.data.JWT as string);
     setUser(userData);
       setTimeout(() => {
         Storage.set("auth-flow", "false");
