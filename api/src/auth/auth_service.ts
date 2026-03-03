@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 
-interface secrets {
-  jwtAccessSecret: string;
-  jwtRefreshSecret: string;
-};
+export interface JWTSecrets {
+    access: string,
+    refresh: string,
+}
 
 export function generateJWT(userId: string, deviceId: string) {
     const payload = {
@@ -11,35 +11,37 @@ export function generateJWT(userId: string, deviceId: string) {
         device_id: deviceId,
     };
 
-    const JWTsecrets = getJwtSecrets();
-    const accessToken = jwt.sign(
+    const jwtSecret = getJwtSecrets() as JWTSecrets;
+    const access_token = jwt.sign(
     payload,
-    JWTsecrets.jwtAccessSecret,
+    jwtSecret.access,
     {
       expiresIn: "15m",
       issuer: "daily-album",
       audience: "frontend",
     }
   );
-    const refreshToken = jwt.sign(
+
+    const refresh_token = jwt.sign(
     payload,
-    JWTsecrets.jwtRefreshSecret,
+    jwtSecret.refresh,
     {
-      expiresIn: "14d",
+      expiresIn: "30d",
       issuer: "daily-album",
       audience: "frontend",
     }
   );
 
-  return { accessToken, refreshToken };
+  return {access_token, refresh_token};
 }
 
-export function getJwtSecrets(): secrets {
-    const jwtAccessSecret = process.env["ACCESS_JWT_SECRET"];
-    const jwtRefreshSecret = process.env["REFRESH_JWT_SECRET"]
-    if(jwtAccessSecret && jwtRefreshSecret) {
-    return { jwtAccessSecret, jwtRefreshSecret };
-    } else {
-        throw "The app has crashed safetly. You are missing essential env variables. " + Error;
-    }
+export function getJwtSecrets(): JWTSecrets {
+  const access = process.env.ACCESS_JWT_SECRET;
+  const refresh = process.env.REFRESH_JWT_SECRET;
+
+  if (!access || !refresh) {
+    throw new Error("Missing JWT secrets in environment variables");
+  }
+
+  return { access, refresh };
 }

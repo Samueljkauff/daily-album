@@ -3,7 +3,7 @@ import type { User } from '@prisma/client';
 import type { Token } from '@prisma/client';
 import { createUser, findUserBySpotifyID } from '../repositories/user_repository.js';
 import * as authApi from '../utils/spotify.js';
-import { generateJWT } from '../auth/auth_service.js';
+import { generateJWT, type JWTSecrets } from '../auth/auth_service.js';
 
 export const authenticateUser = async (clientId: string, code: string, verifier: string, userAgent: string, deviceID: string) => {
   const tokenData = await authApi.getRefreshToken(clientId, code, verifier);
@@ -39,10 +39,10 @@ export const authenticateUser = async (clientId: string, code: string, verifier:
     await removeOldTokens(formattedUserData.spotify_id, formattedTokenData.user_agent, formattedTokenData.device_id);
     await createToken(formattedTokenData, formattedUserData.spotify_id);
   }
-  const { accessToken, refreshToken } = generateJWT(formattedUserData.spotify_id, formattedTokenData.device_id);
+  const JWTs = generateJWT(formattedUserData.spotify_id, formattedTokenData.device_id);
   const response = {
-    access_token: accessToken,
-    refreshToken: refreshToken,
+    access_token: JWTs.access_token,
+    refresh_token:  JWTs.refresh_token,
     username: formattedUserData.username,
     email: formattedUserData.email,
     avatar_url: formattedUserData.avatar_url,
